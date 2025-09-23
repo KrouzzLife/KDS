@@ -27,7 +27,11 @@
     color: #fff;
     margin-left: 10px;
   }
-  
+
+.logo a {
+  text-decoration: none;
+}
+
   /* Hamburger button (hidden by default) */
   .hamburger {
     font-size: 1.8rem;
