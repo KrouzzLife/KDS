@@ -85,46 +85,64 @@
             navLinks.classList.toggle("show");
         });
 
-        // New AJAX form submission script
-        const form = document.getElementById('contactForm');
-        const formStatus = document.getElementById('form-status-message');
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault(); // This stops the normal form submission and redirection
-
-            // Disable the submit button to prevent multiple submissions
-            const submitButton = form.querySelector('input[type="submit"]');
-            submitButton.disabled = true;
-
-            fetch(form.action, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: form.name.value,
-                    emails: form.emails.value,
-                    message: form.message.value
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Clear the form after a successful submission
-                form.reset();
-                formStatus.textContent = 'Thank you for your message! We will get back to you shortly.';
-                formStatus.style.color = 'green';
-            })
-            .catch(error => {
-                formStatus.textContent = 'There was an error submitting your form. Please try again.';
-                formStatus.style.color = 'red';
-                console.error('Error:', error);
-            })
-            .finally(() => {
-                // Re-enable the button after the process is complete
-                submitButton.disabled = false;
-            });
-        });
+      // Corrected AJAX form submission script
+      const form = document.getElementById('contactForm');
+      const formStatus = document.getElementById('form-status-message');
+      
+      form.addEventListener('submit', function(e) {
+        e.preventDefault(); // This stops the normal form submission and redirection
+        
+        // Disable the submit button to prevent multiple submissions
+        const submitButton = form.querySelector('input[type="submit"]');
+        submitButton.disabled = true;
+        
+        // The FormSubmit AJAX endpoint
+        const formSubmitUrl = 'https://formsubmit.co/ajax/globaldigitalassistant@gmail.com';
+        
+        fetch(formSubmitUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+          body: JSON.stringify({
+            name: form.name.value,
+            emails: form.emails.value,
+            message: form.message.value
+        })
+        })
+          
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('FormSubmit responded with an error.');
+            }
+            return response.json();
+          })
+          .then(data => {
+            // Clear the form after a successful submission
+            form.reset();
+            formStatus.textContent = 'Thank you for your message! Redirecting...';
+            formStatus.style.color = 'green';
+        
+        
+            // --- ADDED REDIRECTION LOGIC ---
+            // Redirect the user to the new URL after a short delay
+            setTimeout(() => {
+              window.location.href = 'https://krouzzlife.github.io/KDS/';
+            }, 2000); // 2-second delay to show the "Thank you" message
+            // --- END OF ADDED LOGIC ---
+          })
+          
+          .catch(error => {
+            formStatus.textContent = 'There was an error submitting your form. Please try again.';
+            formStatus.style.color = 'red';
+            console.error('Error:', error);
+          })
+          .finally(() => {
+            // Re-enable the button if there was an error
+            submitButton.disabled = false;
+          });
+      });
     </script>
     </body>
   </html>
