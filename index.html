@@ -63,7 +63,8 @@
 </section>
       <section id="contacts" class="contact">
         <legend>You can reach us directly by filling out the form below</legend>
-        <form action="https://formsubmit.co/krouzzdigitalservices@gmail.com" method="post">
+        <form action="https://api.web3forms.com/submit" method="post">
+          <input type="hidden" name="access_key" value="ec58f5c4-d8bf-4a72-a0a5-5638b2375d4c">
           <label for="name">Name: </label>
           <input type="text" id="name" name="name" required><br>
           <label for="emails">Email: </label>
@@ -84,65 +85,6 @@
         hamburger.addEventListener("click", () => {
             navLinks.classList.toggle("show");
         });
-
-      // Corrected AJAX form submission script
-      const form = document.getElementById('contactForm');
-      const formStatus = document.getElementById('form-status-message');
-      
-      form.addEventListener('submit', function(e) {
-        e.preventDefault(); // This stops the normal form submission and redirection
-        
-        // Disable the submit button to prevent multiple submissions
-        const submitButton = form.querySelector('input[type="submit"]');
-        submitButton.disabled = true;
-        
-        // The FormSubmit AJAX endpoint
-        const formSubmitUrl = 'https://formsubmit.co/ajax/krouzzdigitalservices@gmail.com';
-        
-        fetch(formSubmitUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-          body: JSON.stringify({
-            name: form.name.value,
-            emails: form.emails.value,
-            message: form.message.value
-        })
-        })
-          
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('FormSubmit responded with an error.');
-            }
-            return response.json();
-          })
-          .then(data => {
-            // Clear the form after a successful submission
-            form.reset();
-            formStatus.textContent = 'Thank you for your message! Redirecting...';
-            formStatus.style.color = 'green';
-        
-        
-            // --- ADDED REDIRECTION LOGIC ---
-            // Redirect the user to the new URL after a short delay
-            setTimeout(() => {
-              window.location.href = 'https://krouzzlife.github.io/KDS/';
-            }, 2000); // 2-second delay to show the "Thank you" message
-            // --- END OF ADDED LOGIC ---
-          })
-          
-          .catch(error => {
-            formStatus.textContent = 'There was an error submitting your form. Please try again.';
-            formStatus.style.color = 'red';
-            console.error('Error:', error);
-          })
-          .finally(() => {
-            // Re-enable the button if there was an error
-            submitButton.disabled = false;
-          });
-      });
     </script>
     </body>
   </html>
